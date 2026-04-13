@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Benefitsi – Das digitale Treueprogramm für lokale Geschäfte. Ohne App, ohne Kontaktlos-Chip. Einfach scannen, Punkte sammeln, Rabatte sichern.">
+  <title>Benefitsi — Jetzt Partner werden</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0a0a0f;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .bg {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    }
+    .bg::before {
+      content: '';
+      position: absolute; top: -30%; left: -20%; width: 70%; height: 80%;
+      background: radial-gradient(ellipse, rgba(168,85,247,0.15) 0%, transparent 70%);
+      animation: pulse 8s ease-in-out infinite;
+    }
+    .bg::after {
+      content: '';
+      position: absolute; bottom: -30%; right: -20%; width: 70%; height: 80%;
+      background: radial-gradient(ellipse, rgba(59,130,246,0.12) 0%, transparent 70%);
+      animation: pulse 8s ease-in-out infinite 4s;
+    }
+    @keyframes pulse { 0%,100%{opacity:0.5;transform:scale(1)} 50%{opacity:1;transform:scale(1.1)} }
+
+    .content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding: 60px 24px 100px; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.3);
+      border-radius: 999px; padding: 6px 16px; font-size: 13px; color: #c084fc;
+      margin-bottom: 28px;
+    }
+    .badge span { width: 8px; height: 8px; background: #a855f7; border-radius: 50%; display: inline-block; animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; line-height: 1.1;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #fff 0%, #c084fc 50%, #60a5fa 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .subtitle {
+      font-size: 1.15rem; color: rgba(255,255,255,0.55); line-height: 1.65;
+      margin-bottom: 20px; max-width: 560px;
+    }
+
+    /* Social proof bar */
+    .social-proof {
+      display: flex; align-items: center; gap: 16px; margin-bottom: 52px; flex-wrap: wrap;
+    }
+    .social-proof-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.5); }
+    .social-proof-item .icon { font-size: 18px; }
+    .social-proof-item strong { color: rgba(255,255,255,0.8); }
+
+    /* Stats bar */
+    .stats-bar {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; overflow: hidden; margin-bottom: 52px;
+    }
+    .stat { background: rgba(255,255,255,0.04); padding: 20px; text-align: center; }
+    .stat .number { font-size: 1.75rem; font-weight: 800; background: linear-gradient(135deg, #a855f7, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat .label { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(255,255,255,0.35); margin-bottom: 20px;
+    }
+
+    .how-it-works { margin-bottom: 52px; }
+    .steps { display: flex; flex-direction: column; gap: 14px; }
+    .step {
+      display: flex; gap: 20px; align-items: flex-start;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 20px 24px;
+    }
+    .step-num {
+      width: 36px; height: 36px; min-width: 36px;
+      background: linear-gradient(135deg, #a855f7, #6366f1);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; color: #fff;
+    }
+    .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .step p { font-size: 0.875rem; color: rgba(255,255,255,0.5); line-height: 1.55; }
+
+    /* Testimonials */
+    .testimonials { margin-bottom: 52px; }
+    .testimonials-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .testimonial {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px; padding: 20px;
+    }
+    .testimonial .stars { color: #fbbf24; font-size: 14px; margin-bottom: 10px; }
+    .testimonial .quote { font-size: 0.875rem; color: rgba(255,255,255,0.7); line-height: 1.55; margin-bottom: 12px; font-style: italic; }
+    .testimonial .author { font-size: 12px; color: rgba(255,255,255,0.4); }
+    .testimonial .author strong { color: rgba(255,255,255,0.7); }
+
+    .benefits { margin-bottom: 52px; }
+    .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+    .benefit {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px; padding: 20px;
+    }
+    .benefit-icon { font-size: 1.5rem; margin-bottom: 10px; }
+    .benefit h3 { font-size: 0.9rem; font-weight: 700; margin-bottom: 5px; }
+    .benefit p { font-size: 0.8rem; color: rgba(255,255,255,0.45); line-height: 1.5; }
+
+    /* FAQ */
+    .faq { margin-bottom: 52px; }
+    .faq-item {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; overflow: hidden; margin-bottom: 10px;
+    }
+    .faq-question {
+      padding: 16px 20px; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: background 0.2s;
+    }
+    .faq-question:hover { background: rgba(255,255,255,0.03); }
+    .faq-answer { padding: 0 20px 16px; font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.6; display: none; }
+    .faq-item.open .faq-answer { display: block; }
+    .faq-item.open .faq-toggle { transform: rotate(180deg); }
+    .faq-toggle { transition: transform 0.2s; font-size: 18px; color: rgba(255,255,255,0.4); }
+
+    .form-section {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px; padding: 40px;
+    }
+    .form-section h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; }
+    .form-section .form-subtitle { font-size: 0.875rem; color: rgba(255,255,255,0.45); margin-bottom: 28px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .form-row.full { grid-template-columns: 1fr; }
+    label { display: block; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+    input, select, textarea {
+      width: 100%; padding: 11px 14px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; color: #fff; font-size: 0.9rem;
+      outline: none; transition: border-color 0.2s;
+    }
+    input:focus, select:focus, textarea:focus { border-color: rgba(168,85,247,0.5); }
+    input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.25); }
+    textarea { resize: vertical; min-height: 80px; font-family: inherit; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: linear-gradient(135deg, #a855f7, #6366f1);
+      color: #fff; border: none; border-radius: 12px; padding: 14px 28px;
+      font-size: 0.95rem; font-weight: 700; cursor: pointer;
+      transition: all 0.2s; width: 100%; margin-top: 8px;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 30px rgba(168,85,247,0.35); }
+    .btn:active { transform: translateY(0); }
+
+    .success-msg {
+      display: none; text-align: center; padding: 40px 20px;
+      background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.25);
+      border-radius: 16px; margin-top: 20px;
+    }
+    .success-msg .icon { font-size: 3rem; margin-bottom: 16px; }
+    .success-msg h3 { font-size: 1.2rem; margin-bottom: 8px; }
+    .success-msg p { font-size: 0.875rem; color: rgba(255,255,255,0.55); }
+
+    .trust { display: flex; align-items: center; justify-content: center; gap: 24px; margin-top: 28px; flex-wrap: wrap; }
+    .trust-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.35); }
+    .trust-item span { font-size: 16px; }
+
+    .contact-alt { text-align: center; margin-top: 24px; }
+    .contact-alt a { color: rgba(255,255,255,0.4); font-size: 13px; text-decoration: none; transition: color 0.2s; }
+    .contact-alt a:hover { color: rgba(255,255,255,0.7); }
+
+    .divider { height: 1px; background: rgba(255,255,255,0.08); margin: 52px 0; }
+
+    @media (max-width: 520px) {
+      .form-row { grid-template-columns: 1fr; }
+      .form-section { padding: 28px 20px; }
+      .stats-bar { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="content">
+    <div class="badge"><span></span> Partner-Programm — Jetzt launchbereit</div>
+
+    <h1>Lokale Geschäfte.<br>Neue Stammkunden.</h1>
+    <p class="subtitle">
+      Benefitsi bringt Treueprogramm und Kundenbindung auf ein neues Level — ohne App-Download, ohne Kontaktlos-Chip.
+      Einfach QR-Code scannen, Punkte sammeln, Rabatte sichern.
+    </p>
+
+    <div class="social-proof">
+      <div class="social-proof-item"><span class="icon">🚀</span> <strong>Bald live</strong> in Friedrichshafen</div>
+      <div class="social-proof-item"><span class="icon">📍</span> <strong>10+</strong> lokale Geschäfte interessiert</div>
+      <div class="social-proof-item"><span class="icon">⭐</span> <strong>Early Partner</strong> gesucht</div>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat">
+        <div class="number">0€</div>
+        <div class="label">Monatliche Kosten</div>
+      </div>
+      <div class="stat">
+        <div class="number">5 Min</div>
+        <div class="label">Setup-Zeit</div>
+      </div>
+      <div class="stat">
+        <div class="number">100%</div>
+        <div class="label">Kostenlos für Partner</div>
+      </div>
+    </div>
+
+    <div class="how-it-works">
+      <p class="section-label">So funktioniert's</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <h3>QR-Code aufhängen</h3>
+            <p>Wir liefern einen individuellen QR-Code. Du hängst ihn an die Theke, Tür oder Kasse. Kein Gerät, keine Installation — nada.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <h3>Kunde scannt & sammelt</h3>
+            <p>Kunde fotografiert den Code mit dem Smartphone — keine App, kein Login. Sofort im Browser Punkte sammeln.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <h3>Du belohnst Treue</h3>
+            <p>Stempel, Punkte, Badges — flexibel konfigurierbar. Sobald ein Kunde das Ziel erreicht, wird der Rabatt eingelöst.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonials">
+      <p class="section-label">Das sagen Partner</p>
+      <div class="testimonials-grid">
+        <div class="testimonial" style="border: 1px dashed rgba(168,85,247,0.3); background: rgba(168,85,247,0.05);">
+          <div class="stars">★★★★★</div>
+          <div class="quote" style="color: rgba(255,255,255,0.5); font-style: normal;">Bald verfügbar — sei der Erste, der hier erscheint!</div>
+          <div class="author">— <strong>Dein Geschäft?</strong> — Friedrichshafen</div>
+        </div>
+        <div class="testimonial" style="border: 1px dashed rgba(168,85,247,0.3); background: rgba(168,85,247,0.05);">
+          <div class="stars">★★★★★</div>
+          <div class="quote" style="color: rgba(255,255,255,0.5); font-style: normal;">Werde jetzt Partner und schreibe die erste Bewertung!</div>
+          <div class="author">— <strong>Dein Geschäft?</strong> — Friedrichshafen</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="benefits">
+      <p class="section-label">Vorteile für dein Geschäft</p>
+      <div class="benefits-grid">
+        <div class="benefit">
+          <div class="benefit-icon">📱</div>
+          <h3>Keine App nötig</h3>
+          <p>Kunden brauchen keine App zu installieren. Browser reicht.</p>
+        </div>
+        <div class="benefit">
+          <div class="benefit-icon">⚡</div>
+          <h3>Sofort einsatzbereit</h3>
+          <p>QR-Code drucken, aufhängen, fertig. In unter 5 Minuten startklar.</p>
+        </div>
+        <div class="benefit">
+          <div class="benefit-icon">💸</div>
+          <h3>Kostenlos für Partner</h3>
+          <p>Keine monatlichen Gebühren. Du zahlst nur die Rabatte, die du gibst.</p>
+        </div>
+        <div class="benefit">
+          <div class="benefit-icon">📊</div>
+          <h3>Ein Dashboard</h3>
+          <p>Sieh auf einen Blick, wie viele Stammkunden du hast und wie oft sie kommen.</p>
+        </div>
+        <div class="benefit">
+          <div class="benefit-icon">🎯</div>
+          <h3>Adressierte Kunden</h3>
+          <p>Du erreichst Stammkunden gezielt — nicht nur vorbeischlendernde Laufkundschaft.</p>
+        </div>
+        <div class="benefit">
+          <div class="benefit-icon">🤝</div>
+          <h3>Netzwerk-Effekt</h3>
+          <p>Ein System, mehrere Geschäfte — Kunden werden ermutigt, auch andere lokale Partner zu besuchen.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq">
+      <p class="section-label">FAQ</p>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-question">Braucht der Kunde eine App? <span class="faq-toggle">▾</span></div>
+        <div class="faq-answer">Nein. Der Kunde scannt mit der normalen Smartphone-Kamera — kein Download, kein Login. Sofort Punkte sammeln.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-question">Was kostet das für mich als Geschäft? <span class="faq-toggle">▾</span></div>
+        <div class="faq-answer">Das Partner-Programm ist komplett kostenlos. Du zahlst lediglich die Rabatte, die du freiwillig anbietest — keine versteckten Kosten.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-question">Wie schnell kann ich starten? <span class="faq-toggle">▾</span></div>
+        <div class="faq-answer">Weniger als 5 Minuten. QR-Code ausdrucken, aufhängen, fertig. Du brauchst kein technisches Wissen.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-question">Was passiert mit meinen Daten? <span class="faq-toggle">▾</span></div>
+        <div class="faq-answer">Du siehst nur anonymisierte Statistiken (z.B. Besuchsfrequenz). Keine persönlichen Daten werden verkauft oder geteilt.</div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2>Interesse? Jetzt Partner werden.</h2>
+      <p class="form-subtitle">Fülle das Formular aus — wir melden uns innerhalb von 48 Stunden.</p>
+
+      <form id="partnerForm">
+        <div class="form-row full">
+          <label for="businessName">Name des Geschäfts *</label>
+          <input type="text" id="businessName" name="businessName" placeholder="z.B. Café am Markt" required>
+        </div>
+        <div class="form-row">
+          <div>
+            <label for="contactName">Ansprechpartner *</label>
+            <input type="text" id="contactName" name="contactName" placeholder="Dein Name" required>
+          </div>
+          <div>
+            <label for="phone">Telefon / WhatsApp</label>
+            <input type="tel" id="phone" name="phone" placeholder="+49 123 456789">
+          </div>
+        </div>
+        <div class="form-row full">
+          <label for="email">E-Mail *</label>
+          <input type="email" id="email" name="email" placeholder="hallo@meingeschäft.de" required>
+        </div>
+        <div class="form-row">
+          <div>
+            <label for="category">Branche *</label>
+            <select id="category" name="category" required>
+              <option value="" disabled selected>Bitte wählen</option>
+              <option value="gastro">Gastronomie / Café / Bistro</option>
+              <option value="retail">Einzelhandel</option>
+              <option value="service">Dienstleistung (Friseur, Fitness…)</option>
+              <option value="food">Lebensmittel / Bäckerei / Metzgerei</option>
+              <option value="other">Sonstiges</option>
+            </select>
+          </div>
+          <div>
+            <label for="location">Standort</label>
+            <input type="text" id="location" name="location" placeholder="Friedrichshafen, Langenargen, Meckenbeuren…">
+          </div>
+        </div>
+        <div class="form-row full">
+          <label for="message">Etwas, das du uns mitteilen möchtest?</label>
+          <textarea id="message" name="message" placeholder="Öffnungszeiten, besondere Angebote, Fragen…"></textarea>
+        </div>
+
+        <button type="submit" class="btn">
+          <span>🚀</span> Anfrage absenden
+        </button>
+      </form>
+
+      <div class="success-msg" id="successMsg">
+        <div class="icon">✅</div>
+        <h3>Anfrage gesendet!</h3>
+        <p>Danke für dein Interesse. Wir melden uns innerhalb von 48 Stunden bei dir.</p>
+      </div>
+
+      <div class="trust">
+        <div class="trust-item"><span>🔒</span> Keine Provision</div>
+        <div class="trust-item"><span>📱</span> Keine App nötig</div>
+        <div class="trust-item"><span>⚡</span> Schnell eingerichtet</div>
+        <div class="trust-item"><span>💬</span> Persönlicher Support</div>
+      </div>
+    </div>
+
+    <div class="contact-alt">
+      <a href="mailto:benefitsi@pm.me?subject=Benefitsi Partneranfrage">Oder schreib uns direkt: benefitsi@pm.me</a>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('partnerForm');
+    const success = document.getElementById('successMsg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form));
+      data.timestamp = new Date().toISOString();
+      data.source = 'partner-landing';
+
+      try {
+        const formSubmitForm = document.createElement('form');
+        formSubmitForm.method = 'POST';
+        formSubmitForm.action = 'https://formsubmit.co/benefitsi@pm.me';
+        formSubmitForm.style.display = 'none';
+        
+        const fields = [
+          ['businessName', data.businessName || ''],
+          ['contactName', data.contactName || ''],
+          ['phone', data.phone || ''],
+          ['email', data.email || ''],
+          ['category', data.category || ''],
+          ['location', data.location || ''],
+          ['message', data.message || ''],
+          ['_subject', 'Benefitsi Partneranfrage: ' + (data.businessName || '')],
+          ['_captcha', 'false'],
+        ];
+
+        fields.forEach(([name, value]) => {
+          const input = document.createElement('input');
+          input.type = 'hidden'; input.name = name; input.value = value;
+          formSubmitForm.appendChild(input);
+        });
+
+        document.body.appendChild(formSubmitForm);
+        formSubmitForm.submit();
+      } catch(err) {
+        window.location.href = `mailto:benefitsi@pm.me?subject=Benefitsi Partneranfrage: ${encodeURIComponent(data.businessName || '')}`;
+      }
+
+      form.style.display = 'none';
+      success.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
